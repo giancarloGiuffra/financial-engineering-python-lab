@@ -1,4 +1,6 @@
 from unittest import TestCase
+import numpy as np
+import solutions
 
 class EuropeanOption:
     strike = 1.0
@@ -15,11 +17,13 @@ class EuropeanOptionMCTest(TestCase):
         super(EuropeanOptionMCTest, self).__init__(testname)
         self.student_function = student_function
     
-    def test_simple_function_that_adds_17(self):
-        self.assertEqual(self.student_function(1), 18)
-        self.assertEqual(self.student_function(10), 27)
-        self.assertEqual(self.student_function(-6), 11)
-    
-    def test_call(self, student_function):
-        pass
+    def test_call(self):
+        option = EuropeanOption()
+        discount_factor = np.exp(-option.zero_rate*option.time_to_maturity)
+        forward = option.spot_price/discount_factor
+        number_of_samples = 1000
+        np.random.seed(218423)
+        expected_price = solutions.EuropeanOptionMC(forward, option.strike, discount_factor, option.time_to_maturity, option.volatility, number_of_samples, 1)
+        actual_price = self.student_function(forward, option.strike, discount_factor, option.time_to_maturity, option.volatility, number_of_samples, 1)
+        self.assertEqual(expected_price, actual_price)
         
