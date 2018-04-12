@@ -5,8 +5,8 @@ def EuropeanOptionMC(forward, strike, discount_factor, time_to_maturity, volatil
     asset_at_maturity = forward * np.exp( -0.5*volatility**2*time_to_maturity + volatility*np.sqrt(time_to_maturity)*standar_normal )
 
     if flag == 1:
-        simulated_option_price = discount_factor*np.max(asset_at_maturity - strike, 0)
+        simulated_option_price = discount_factor*(asset_at_maturity - strike).clip(0, np.inf)
     else:
-        simulated_option_price = discount_factor*np.max(strike - asset_at_maturity, 0)
+        simulated_option_price = discount_factor*(strike - asset_at_maturity).clip(0, np.inf)
 
     return np.mean(simulated_option_price)

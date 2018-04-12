@@ -24,6 +24,18 @@ class EuropeanOptionMCTest(TestCase):
         number_of_samples = 1000
         np.random.seed(218423)
         expected_price = solutions.EuropeanOptionMC(forward, option.strike, discount_factor, option.time_to_maturity, option.volatility, number_of_samples, 1)
+        np.random.seed(218423)
         actual_price = self.student_function(forward, option.strike, discount_factor, option.time_to_maturity, option.volatility, number_of_samples, 1)
+        self.assertEqual(expected_price, actual_price)
+        
+    def test_put(self):
+        option = EuropeanOption()
+        discount_factor = np.exp(-option.zero_rate*option.time_to_maturity)
+        forward = option.spot_price/discount_factor
+        number_of_samples = 1000
+        np.random.seed(218423)
+        expected_price = solutions.EuropeanOptionMC(forward, option.strike, discount_factor, option.time_to_maturity, option.volatility, number_of_samples, -1)
+        np.random.seed(218423)
+        actual_price = self.student_function(forward, option.strike, discount_factor, option.time_to_maturity, option.volatility, number_of_samples, -1)
         self.assertEqual(expected_price, actual_price)
         
