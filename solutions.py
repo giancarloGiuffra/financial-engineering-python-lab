@@ -12,5 +12,11 @@ def EuropeanOptionMC(forward, strike, discount_factor, time_to_maturity, volatil
 
     return np.mean(simulated_option_price)
 
-def ReadSwapRates(file, sheet, fromRow, columnRange):
-    return pd.read_excel(file, sheet_name = sheet, skiprows = fromRow, usecols = columnRange)
+def ReadSwapRates(file, sheet, fromRow, numberOfRows, columnRange):
+    swaprates = pd.read_excel(file, sheet_name = sheet, index_col = 0, skiprows = fromRow, usecols = columnRange)
+    return swaprates[:numberOfRows]
+
+def ExtractDatesAndMidRates(swap_rates):
+    bids = np.array(swap_rates['BID'])
+    asks = np.array(swap_rates['ASK'])
+    return swap_rates.axes[0].tolist(), 0.5*(bids + asks)
