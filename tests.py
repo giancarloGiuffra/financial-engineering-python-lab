@@ -95,3 +95,25 @@ class ExtractDatesAndMidRatesTest(TestCase):
     def test_mid_rates(self):
         actual_dates, actual_mid_rates = self.student_function(self.swap_rates)
         np.testing.assert_almost_equal(self.expected_mid_rates, actual_mid_rates)
+
+
+class CalculateEmpiricalSurvivalProbabilitiesTest(TestCase):
+
+    number_of_samples = 1000
+    lambdas = 0.004
+    last_year = 30
+    
+    def __init__(self, testname, student_function):
+        super(CalculateEmpiricalSurvivalProbabilitiesTest, self).__init__(testname)
+        self.student_function = student_function
+
+    def test_size_must_be_30(self):
+        actual_probabilities = self.student_function(self.number_of_samples, self.lambdas, self.last_year)
+        self.assertEqual(actual_probabilities.size, 30)
+        
+    def test_probabilities(self):
+        np.random.seed(218423)
+        expected_probabilities = solutions.CalculateEmpiricalSurvivalProbabilities(self.number_of_samples, self.lambdas, self.last_year)
+        np.random.seed(218423)
+        actual_probabilities = self.student_function(self.number_of_samples, self.lambdas, self.last_year)
+        np.testing.assert_almost_equal(expected_probabilities, actual_probabilities)

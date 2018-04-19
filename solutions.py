@@ -20,3 +20,9 @@ def ExtractDatesAndMidRates(swap_rates):
     bids = np.array(swap_rates['BID'])
     asks = np.array(swap_rates['ASK'])
     return swap_rates.axes[0].tolist(), 0.5*(bids + asks)
+
+def CalculateEmpiricalSurvivalProbabilities(number_of_samples, lambdas, last_year):
+    uniforms = np.random.rand(number_of_samples, 1)
+    default_years = np.floor(-1/lambdas*np.log(uniforms))
+    defaults_by_year = [ np.count_nonzero(default_years == n) for n in np.arange(0, last_year )]
+    return (number_of_samples - np.cumsum(defaults_by_year))/number_of_samples
