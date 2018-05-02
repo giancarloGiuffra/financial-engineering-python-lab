@@ -2,3 +2,11 @@
 .ipynb_checkpoints
 __pycache__/
 .~lock.*
+.DS_Store
+slides/*.aux
+slides/*.out
+slides/*.log
+slides/*.snm
+slides/*.toc
+slides/*.gz
+slides/*.nav
